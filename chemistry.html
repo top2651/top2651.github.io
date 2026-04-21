@@ -1,0 +1,1065 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>화학식 완전 정리</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0e1a;
+    --surface: #111827;
+    --surface2: #1a2236;
+    --border: #1e2d45;
+    --accent: #3b82f6;
+    --accent2: #06b6d4;
+    --accent3: #8b5cf6;
+    --accent4: #10b981;
+    --accent5: #f59e0b;
+    --text: #e2e8f0;
+    --text-dim: #64748b;
+    --text-muted: #334155;
+    --red: #ef4444;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Noto Sans KR', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* 배경 그리드 패턴 */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(59,130,246,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(59,130,246,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .wrapper {
+    position: relative;
+    z-index: 1;
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 60px 24px 80px;
+  }
+
+  /* ── 헤더 ── */
+  .hero {
+    text-align: center;
+    margin-bottom: 64px;
+  }
+
+  .hero-label {
+    display: inline-block;
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: rgba(59,130,246,0.1);
+    border: 1px solid rgba(59,130,246,0.25);
+    padding: 6px 16px;
+    border-radius: 2px;
+    margin-bottom: 24px;
+  }
+
+  .hero h1 {
+    font-size: clamp(32px, 6vw, 56px);
+    font-weight: 900;
+    letter-spacing: -1.5px;
+    line-height: 1.1;
+    background: linear-gradient(135deg, #e2e8f0 0%, #94a3b8 50%, #3b82f6 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 16px;
+  }
+
+  .hero-sub {
+    color: var(--text-dim);
+    font-size: 14px;
+    letter-spacing: 0.5px;
+  }
+
+  .hero-stats {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    margin-top: 32px;
+  }
+
+  .stat {
+    text-align: center;
+  }
+
+  .stat-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--accent);
+    display: block;
+  }
+
+  .stat-label {
+    font-size: 11px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  /* ── 섹션 공통 ── */
+  .section {
+    margin-bottom: 56px;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .section-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+    width: 24px;
+    flex-shrink: 0;
+  }
+
+  .section-title {
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: -0.3px;
+  }
+
+  .section-badge {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    padding: 3px 10px;
+    border-radius: 2px;
+    margin-left: auto;
+    flex-shrink: 0;
+  }
+
+  /* ── 물질 화학식 그리드 ── */
+  .substance-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 8px;
+  }
+
+  .substance-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 12px 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: border-color 0.2s, background 0.2s;
+    cursor: default;
+  }
+
+  .substance-card:hover {
+    border-color: rgba(59,130,246,0.4);
+    background: var(--surface2);
+  }
+
+  .substance-name {
+    font-size: 13px;
+    color: var(--text);
+    font-weight: 400;
+  }
+
+  .substance-formula {
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--accent2);
+    text-align: right;
+  }
+
+  /* ── 반응식 테이블 ── */
+  .rxn-list {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .rxn-row {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 0;
+    border-radius: 5px;
+    overflow: hidden;
+    transition: transform 0.15s;
+  }
+
+  .rxn-row:hover { transform: translateX(4px); }
+
+  .rxn-name {
+    background: var(--surface2);
+    padding: 11px 14px;
+    font-size: 12.5px;
+    color: var(--text-dim);
+    border-right: 2px solid var(--border);
+    display: flex;
+    align-items: center;
+  }
+
+  .rxn-eq {
+    background: var(--surface);
+    padding: 11px 16px;
+    font-family: 'Space Mono', monospace;
+    font-size: 12.5px;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    border: 1px solid var(--border);
+    border-left: none;
+  }
+
+  .rxn-row:nth-child(odd) .rxn-eq { border-left: 3px solid var(--accent); }
+  .rxn-row:nth-child(even) .rxn-eq { border-left: 3px solid var(--accent3); }
+
+  /* ── 부피비 카드 ── */
+  .ratio-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+    gap: 10px;
+  }
+
+  .ratio-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-top: 3px solid var(--accent4);
+    border-radius: 6px;
+    padding: 16px;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  .ratio-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(16,185,129,0.15);
+  }
+
+  .ratio-name {
+    font-size: 12px;
+    color: var(--text-dim);
+    margin-bottom: 8px;
+    font-weight: 500;
+  }
+
+  .ratio-eq {
+    font-family: 'Space Mono', monospace;
+    font-size: 11.5px;
+    color: var(--text);
+    margin-bottom: 10px;
+    line-height: 1.5;
+  }
+
+  .ratio-badge {
+    display: inline-block;
+    background: rgba(16,185,129,0.12);
+    border: 1px solid rgba(16,185,129,0.3);
+    color: var(--accent4);
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 3px;
+    letter-spacing: 1px;
+  }
+
+  /* ── 질량비 테이블 ── */
+  .mass-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 8px;
+  }
+
+  .mass-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent5);
+    border-radius: 4px;
+    padding: 12px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background 0.2s;
+  }
+
+  .mass-card:hover { background: var(--surface2); }
+
+  .mass-name {
+    font-size: 12.5px;
+    color: var(--text-dim);
+  }
+
+  .mass-ratio {
+    font-family: 'Space Mono', monospace;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--accent5);
+  }
+
+  /* ── 색상 테마별 ── */
+  .sec-blue .section-title { color: #60a5fa; }
+  .sec-blue .section-badge { background: rgba(59,130,246,0.1); border: 1px solid rgba(59,130,246,0.25); color: #60a5fa; }
+
+  .sec-cyan .section-title { color: #22d3ee; }
+  .sec-cyan .section-badge { background: rgba(6,182,212,0.1); border: 1px solid rgba(6,182,212,0.25); color: #22d3ee; }
+
+  .sec-green .section-title { color: #34d399; }
+  .sec-green .section-badge { background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.25); color: #34d399; }
+
+  .sec-amber .section-title { color: #fbbf24; }
+  .sec-amber .section-badge { background: rgba(245,158,11,0.1); border: 1px solid rgba(245,158,11,0.25); color: #fbbf24; }
+
+  /* 발열/흡열 태그 */
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 2px;
+    margin-left: 8px;
+    flex-shrink: 0;
+    letter-spacing: 0.5px;
+  }
+  .tag-hot {
+    background: rgba(239,68,68,0.12);
+    border: 1px solid rgba(239,68,68,0.3);
+    color: #f87171;
+  }
+  .tag-cold {
+    background: rgba(59,130,246,0.12);
+    border: 1px solid rgba(59,130,246,0.3);
+    color: #60a5fa;
+  }
+  .rxn-eq-wrap {
+    display: flex;
+    align-items: center;
+    width: 100%;
+  }
+
+  /* ── 푸터 ── */
+  .footer {
+    text-align: center;
+    padding-top: 40px;
+    border-top: 1px solid var(--border);
+    color: var(--text-muted);
+    font-size: 12px;
+    font-family: 'Space Mono', monospace;
+    letter-spacing: 0.5px;
+  }
+
+  /* ── 페이드인 애니메이션 ── */
+  .section {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeUp 0.5s ease forwards;
+  }
+  .section:nth-child(1) { animation-delay: 0.1s; }
+  .section:nth-child(2) { animation-delay: 0.2s; }
+  .section:nth-child(3) { animation-delay: 0.3s; }
+  .section:nth-child(4) { animation-delay: 0.4s; }
+
+  @keyframes fadeUp {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero { animation: fadeUp 0.6s ease forwards; }
+
+  /* ── 퀴즈 ── */
+  .quiz-tabs {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+  .quiz-tab {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    padding: 8px 16px;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text-dim);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .quiz-tab:hover { border-color: #a78bfa; color: #a78bfa; }
+  .quiz-tab.active { background: rgba(167,139,250,0.15); border-color: #a78bfa; color: #a78bfa; font-weight: 700; }
+  .quiz-controls {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+  .quiz-btn {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 10px 24px;
+    border-radius: 4px;
+    border: none;
+    background: #7c3aed;
+    color: white;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+  }
+  .quiz-btn:hover { background: #6d28d9; transform: translateY(-1px); }
+  .quiz-btn.secondary { background: var(--surface2); border: 1px solid var(--border); color: var(--text); }
+  .quiz-btn.secondary:hover { border-color: #a78bfa; }
+  .quiz-score {
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    color: #a78bfa;
+    padding: 8px 14px;
+    background: rgba(167,139,250,0.1);
+    border: 1px solid rgba(167,139,250,0.2);
+    border-radius: 4px;
+  }
+  .quiz-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-top: 3px solid #7c3aed;
+    border-radius: 8px;
+    padding: 28px;
+  }
+  .quiz-progress {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--text-dim);
+    margin-bottom: 20px;
+    letter-spacing: 1px;
+  }
+  .quiz-question {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 20px;
+    line-height: 1.6;
+  }
+  .quiz-question .highlight {
+    font-family: 'Space Mono', monospace;
+    font-size: 20px;
+    font-weight: 700;
+    color: #a78bfa;
+    display: block;
+    margin-top: 10px;
+    letter-spacing: 1px;
+  }
+  .quiz-input {
+    font-family: 'Space Mono', monospace;
+    font-size: 16px;
+    padding: 12px 16px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    color: var(--text);
+    width: 100%;
+    max-width: 360px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .quiz-input:focus { border-color: #7c3aed; }
+  .quiz-input.correct { border-color: #10b981; background: rgba(16,185,129,0.08); }
+  .quiz-input.wrong { border-color: #ef4444; background: rgba(239,68,68,0.08); }
+  .quiz-submit {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 12px 24px;
+    margin-top: 12px;
+    border-radius: 4px;
+    border: none;
+    background: #7c3aed;
+    color: white;
+    cursor: pointer;
+    transition: background 0.2s;
+    display: block;
+  }
+  .quiz-submit:hover { background: #6d28d9; }
+  .quiz-options {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 4px;
+  }
+  .quiz-option {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 13px;
+    padding: 12px 16px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    color: var(--text);
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.15s;
+    font-family: 'Space Mono', monospace;
+  }
+  .quiz-option:hover:not(:disabled) { border-color: #7c3aed; background: rgba(124,58,237,0.1); }
+  .quiz-option.correct { border-color: #10b981 !important; background: rgba(16,185,129,0.12) !important; color: #34d399 !important; }
+  .quiz-option.wrong { border-color: #ef4444 !important; background: rgba(239,68,68,0.1) !important; color: #f87171 !important; }
+  .quiz-feedback {
+    margin-top: 16px;
+    padding: 12px 16px;
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1.6;
+  }
+  .quiz-feedback.ok { background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.3); color: #34d399; }
+  .quiz-feedback.ng { background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3); color: #f87171; }
+  .result-box {
+    text-align: center;
+    padding: 48px 24px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+  }
+  .result-emoji { font-size: 56px; margin-bottom: 16px; }
+  .result-score { font-family: 'Space Mono', monospace; font-size: 36px; font-weight: 700; color: #a78bfa; margin-bottom: 12px; }
+  .result-msg { font-size: 15px; color: var(--text-dim); }
+
+</style>
+</head>
+<body>
+<div class="wrapper">
+
+  <!-- 헤더 -->
+  <div class="hero">
+    <div class="hero-label">3학년 과학 활동지 · 전체 범위</div>
+    <h1>화학식 완전 정리</h1>
+    <p class="hero-sub">모든 반응식 원자 수 검토 완료 · 사진 10장 분석</p>
+    <div class="hero-stats">
+      <div class="stat"><span class="stat-num">38</span><span class="stat-label">물질</span></div>
+      <div class="stat"><span class="stat-num">25</span><span class="stat-label">반응식</span></div>
+      <div class="stat"><span class="stat-num">4</span><span class="stat-label">부피비</span></div>
+      <div class="stat"><span class="stat-num">6</span><span class="stat-label">질량비</span></div>
+    </div>
+  </div>
+
+  <!-- 1. 물질 화학식 -->
+  <div class="section sec-blue">
+    <div class="section-header">
+      <span class="section-num">01</span>
+      <h2 class="section-title">물질 화학식</h2>
+      <span class="section-badge">38종</span>
+    </div>
+    <div class="substance-grid">
+      <div class="substance-card"><span class="substance-name">수소</span><span class="substance-formula">H₂</span></div>
+      <div class="substance-card"><span class="substance-name">산소</span><span class="substance-formula">O₂</span></div>
+      <div class="substance-card"><span class="substance-name">질소</span><span class="substance-formula">N₂</span></div>
+      <div class="substance-card"><span class="substance-name">염소</span><span class="substance-formula">Cl₂</span></div>
+      <div class="substance-card"><span class="substance-name">물</span><span class="substance-formula">H₂O</span></div>
+      <div class="substance-card"><span class="substance-name">과산화수소</span><span class="substance-formula">H₂O₂</span></div>
+      <div class="substance-card"><span class="substance-name">암모니아</span><span class="substance-formula">NH₃</span></div>
+      <div class="substance-card"><span class="substance-name">이산화탄소</span><span class="substance-formula">CO₂</span></div>
+      <div class="substance-card"><span class="substance-name">일산화탄소</span><span class="substance-formula">CO</span></div>
+      <div class="substance-card"><span class="substance-name">일산화질소</span><span class="substance-formula">NO</span></div>
+      <div class="substance-card"><span class="substance-name">이산화질소</span><span class="substance-formula">NO₂</span></div>
+      <div class="substance-card"><span class="substance-name">염화수소</span><span class="substance-formula">HCl</span></div>
+      <div class="substance-card"><span class="substance-name">메테인</span><span class="substance-formula">CH₄</span></div>
+      <div class="substance-card"><span class="substance-name">부탄</span><span class="substance-formula">C₄H₁₀</span></div>
+      <div class="substance-card"><span class="substance-name">아세트산</span><span class="substance-formula">CH₃COOH</span></div>
+      <div class="substance-card"><span class="substance-name">마그네슘</span><span class="substance-formula">Mg</span></div>
+      <div class="substance-card"><span class="substance-name">산화마그네슘</span><span class="substance-formula">MgO</span></div>
+      <div class="substance-card"><span class="substance-name">구리</span><span class="substance-formula">Cu</span></div>
+      <div class="substance-card"><span class="substance-name">산화구리(II)</span><span class="substance-formula">CuO</span></div>
+      <div class="substance-card"><span class="substance-name">철</span><span class="substance-formula">Fe</span></div>
+      <div class="substance-card"><span class="substance-name">산화철(III)</span><span class="substance-formula">Fe₂O₃</span></div>
+      <div class="substance-card"><span class="substance-name">나트륨</span><span class="substance-formula">Na</span></div>
+      <div class="substance-card"><span class="substance-name">아자이드화나트륨</span><span class="substance-formula">NaN₃</span></div>
+      <div class="substance-card"><span class="substance-name">탄산나트륨</span><span class="substance-formula">Na₂CO₃</span></div>
+      <div class="substance-card"><span class="substance-name">염화나트륨</span><span class="substance-formula">NaCl</span></div>
+      <div class="substance-card"><span class="substance-name">탄산칼슘</span><span class="substance-formula">CaCO₃</span></div>
+      <div class="substance-card"><span class="substance-name">염화칼슘</span><span class="substance-formula">CaCl₂</span></div>
+      <div class="substance-card"><span class="substance-name">수산화칼슘</span><span class="substance-formula">Ca(OH)₂</span></div>
+      <div class="substance-card"><span class="substance-name">수산화바륨</span><span class="substance-formula">Ba(OH)₂</span></div>
+      <div class="substance-card"><span class="substance-name">염화바륨</span><span class="substance-formula">BaCl₂</span></div>
+      <div class="substance-card"><span class="substance-name">염화암모늄</span><span class="substance-formula">NH₄Cl</span></div>
+      <div class="substance-card"><span class="substance-name">아세트산마그네슘</span><span class="substance-formula">Mg(CH₃COO)₂</span></div>
+      <div class="substance-card"><span class="substance-name">아세트산칼슘</span><span class="substance-formula">Ca(CH₃COO)₂</span></div>
+      <div class="substance-card"><span class="substance-name">탄산수소나트륨</span><span class="substance-formula">NaHCO₃</span></div>
+      <div class="substance-card"><span class="substance-name">수산화나트륨</span><span class="substance-formula">NaOH</span></div>
+      <div class="substance-card"><span class="substance-name">염화마그네슘</span><span class="substance-formula">MgCl₂</span></div>
+      <div class="substance-card"><span class="substance-name">질산암모늄</span><span class="substance-formula">NH₄NO₃</span></div>
+      <div class="substance-card"><span class="substance-name">질산바륨</span><span class="substance-formula">Ba(NO₃)₂</span></div>
+    </div>
+  </div>
+
+  <!-- 2. 화학 반응식 -->
+  <div class="section sec-cyan">
+    <div class="section-header">
+      <span class="section-num">02</span>
+      <h2 class="section-title">화학 반응식</h2>
+      <span class="section-badge">검토 완료 ✓</span>
+    </div>
+    <div class="rxn-list">
+      <div class="rxn-row"><span class="rxn-name">물 생성</span><span class="rxn-eq"><span class="rxn-eq-wrap">2H₂ + O₂ → 2H₂O</span></span></div>
+      <div class="rxn-row"><span class="rxn-name">물 전기분해</span><span class="rxn-eq"><span class="rxn-eq-wrap">2H₂O → 2H₂ + O₂</span></span></div>
+      <div class="rxn-row"><span class="rxn-name">암모니아 생성</span><span class="rxn-eq"><span class="rxn-eq-wrap">N₂ + 3H₂ → 2NH₃</span></span></div>
+      <div class="rxn-row"><span class="rxn-name">염화수소 생성</span><span class="rxn-eq"><span class="rxn-eq-wrap">H₂ + Cl₂ → 2HCl</span></span></div>
+      <div class="rxn-row"><span class="rxn-name">일산화질소 생성</span><span class="rxn-eq"><span class="rxn-eq-wrap">N₂ + O₂ → 2NO<span class="tag tag-cold">❄️ 흡열</span></span></span></div>
+      <div class="rxn-row"><span class="rxn-name">이산화질소 생성</span><span class="rxn-eq"><span class="rxn-eq-wrap">N₂ + 2O₂ → 2NO₂</span></span></div>
+      <div class="rxn-row"><span class="rxn-name">마그네슘 연소</span><span class="rxn-eq"><span class="rxn-eq-wrap">2Mg + O₂ → 2MgO</span></span></div>
+      <div class="rxn-row"><span class="rxn-name">구리 산화</span><span class="rxn-eq"><span class="rxn-eq-wrap">2Cu + O₂ → 2CuO</span></span></div>
+      <div class="rxn-row"><span class="rxn-name">탄소 완전연소</span><span class="rxn-eq"><span class="rxn-eq-wrap">C + O₂ → CO₂</span></span></div>
+      <div class="rxn-row"><span class="rxn-name">탄소 불완전연소</span><span class="rxn-eq"><span class="rxn-eq-wrap">2C + O₂ → 2CO</span></span></div>
+      <div class="rxn-row"><span class="rxn-name">메테인 연소</span><span class="rxn-eq"><span class="rxn-eq-wrap">CH₄ + 2O₂ → CO₂ + 2H₂O<span class="tag tag-hot">🔥 발열</span></span></span></div>
+      <div class="rxn-row"><span class="rxn-name">부탄 연소</span><span class="rxn-eq"><span class="rxn-eq-wrap">2C₄H₁₀ + 13O₂ → 8CO₂ + 10H₂O</span></span></div>
+      <div class="rxn-row"><span class="rxn-name">과산화수소 분해</span><span class="rxn-eq"><span class="rxn-eq-wrap">2H₂O₂ → 2H₂O + O₂</span></span></div>
+      <div class="rxn-row"><span class="rxn-name">아자이드화나트륨 분해 (에어백)</span><span class="rxn-eq"><span class="rxn-eq-wrap">2NaN₃ → 2Na + 3N₂</span></span></div>
+      <div class="rxn-row"><span class="rxn-name">탄산나트륨 + 염화칼슘 (앙금생성)</span><span class="rxn-eq"><span class="rxn-eq-wrap">Na₂CO₃ + CaCl₂ → CaCO₃↓ + 2NaCl</span></span></div>
+      <div class="rxn-row"><span class="rxn-name">달걀껍데기 + 식초 (기체발생)</span><span class="rxn-eq"><span class="rxn-eq-wrap">CaCO₃ + 2CH₃COOH → Ca(CH₃COO)₂ + H₂O + CO₂↑</span></span></div>
+      <div class="rxn-row"><span class="rxn-name">마그네슘 + 아세트산</span><span class="rxn-eq"><span class="rxn-eq-wrap">Mg + 2CH₃COOH → Mg(CH₃COO)₂ + H₂↑</span></span></div>
+      <div class="rxn-row"><span class="rxn-name">산화마그네슘 + 아세트산</span><span class="rxn-eq"><span class="rxn-eq-wrap">MgO + 2CH₃COOH → Mg(CH₃COO)₂ + H₂O</span></span></div>
+      <div class="rxn-row"><span class="rxn-name">철 산화 (강철솜)</span><span class="rxn-eq"><span class="rxn-eq-wrap">4Fe + 3O₂ → 2Fe₂O₃<span class="tag tag-hot">🔥 발열</span></span></span></div>
+      <div class="rxn-row"><span class="rxn-name">마그네슘 + 염산</span><span class="rxn-eq"><span class="rxn-eq-wrap">Mg + 2HCl → MgCl₂ + H₂↑<span class="tag tag-hot">🔥 발열</span></span></span></div>
+      <div class="rxn-row"><span class="rxn-name">중화반응 (염산 + 수산화나트륨)</span><span class="rxn-eq"><span class="rxn-eq-wrap">HCl + NaOH → NaCl + H₂O<span class="tag tag-hot">🔥 발열</span></span></span></div>
+      <div class="rxn-row"><span class="rxn-name">산화구리 환원</span><span class="rxn-eq"><span class="rxn-eq-wrap">2CuO + C → 2Cu + CO₂</span></span></div>
+      <div class="rxn-row"><span class="rxn-name">탄산수소나트륨 분해</span><span class="rxn-eq"><span class="rxn-eq-wrap">2NaHCO₃ → Na₂CO₃ + H₂O + CO₂↑<span class="tag tag-cold">❄️ 흡열</span></span></span></div>
+      <div class="rxn-row"><span class="rxn-name">수산화바륨 + 염화암모늄</span><span class="rxn-eq"><span class="rxn-eq-wrap">Ba(OH)₂ + 2NH₄Cl → BaCl₂ + 2NH₃ + 2H₂O<span class="tag tag-cold">❄️ 흡열</span></span></span></div>
+      <div class="rxn-row"><span class="rxn-name">수산화바륨 + 질산암모늄</span><span class="rxn-eq"><span class="rxn-eq-wrap">Ba(OH)₂ + 2NH₄NO₃ → Ba(NO₃)₂ + 2NH₃ + 2H₂O<span class="tag tag-cold">❄️ 흡열</span></span></span></div>
+    </div>
+  </div>
+
+  <!-- 3. 기체 부피비 -->
+  <div class="section sec-green">
+    <div class="section-header">
+      <span class="section-num">03</span>
+      <h2 class="section-title">기체 부피비</h2>
+      <span class="section-badge">동일 온도·압력</span>
+    </div>
+    <div class="ratio-grid">
+      <div class="ratio-card">
+        <div class="ratio-name">물 생성</div>
+        <div class="ratio-eq">2H₂ + O₂ → 2H₂O</div>
+        <span class="ratio-badge">2 : 1 : 2</span>
+      </div>
+      <div class="ratio-card">
+        <div class="ratio-name">암모니아 생성</div>
+        <div class="ratio-eq">N₂ + 3H₂ → 2NH₃</div>
+        <span class="ratio-badge">1 : 3 : 2</span>
+      </div>
+      <div class="ratio-card">
+        <div class="ratio-name">염화수소 생성</div>
+        <div class="ratio-eq">H₂ + Cl₂ → 2HCl</div>
+        <span class="ratio-badge">1 : 1 : 2</span>
+      </div>
+      <div class="ratio-card">
+        <div class="ratio-name">일산화탄소 생성</div>
+        <div class="ratio-eq">2C + O₂ → 2CO</div>
+        <span class="ratio-badge">2 : 1 : 2</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. 질량비 -->
+  <div class="section sec-amber">
+    <div class="section-header">
+      <span class="section-num">04</span>
+      <h2 class="section-title">주요 질량비</h2>
+      <span class="section-badge">일정 성분비</span>
+    </div>
+    <div class="mass-grid">
+      <div class="mass-card"><span class="mass-name">물 (H : O)</span><span class="mass-ratio">1 : 8</span></div>
+      <div class="mass-card"><span class="mass-name">과산화수소 (H : O)</span><span class="mass-ratio">1 : 16</span></div>
+      <div class="mass-card"><span class="mass-name">암모니아 (N : H)</span><span class="mass-ratio">14 : 3</span></div>
+      <div class="mass-card"><span class="mass-name">산화마그네슘 (Mg : O : MgO)</span><span class="mass-ratio">3 : 2 : 5</span></div>
+      <div class="mass-card"><span class="mass-name">산화구리(II) (Cu : O : CuO)</span><span class="mass-ratio">4 : 1 : 5</span></div>
+      <div class="mass-card"><span class="mass-name">산화철(III) (Fe : O)</span><span class="mass-ratio">7 : 3</span></div>
+    </div>
+  </div>
+
+
+  <!-- 5. 발열/흡열 반응 정리 -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">05</span>
+      <h2 class="section-title" style="color:#f472b6;">발열 / 흡열 반응 정리</h2>
+      <span class="section-badge" style="background:rgba(244,114,182,0.1);border:1px solid rgba(244,114,182,0.25);color:#f472b6;">프린트 기준</span>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+      <!-- 발열 -->
+      <div>
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;padding:8px 12px;background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.2);border-radius:4px;">
+          <span style="font-size:16px;">🔥</span>
+          <span style="font-family:Space Mono,monospace;font-size:11px;font-weight:700;color:#f87171;letter-spacing:1px;">발열 반응</span>
+          <span style="font-size:11px;color:var(--text-dim);margin-left:4px;">주위 온도 올라감</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:3px;">
+          <div style="background:#1a1a2e;border:1px solid rgba(239,68,68,0.15);border-left:3px solid #ef4444;border-radius:3px;padding:8px 12px;">
+            <div style="font-size:11.5px;color:var(--text-dim);margin-bottom:3px;">수소와 산소의 반응</div>
+            <div style="font-family:Space Mono,monospace;font-size:11px;color:var(--text);">2H₂ + O₂ → 2H₂O</div>
+          </div>
+          <div style="background:#1a1a2e;border:1px solid rgba(239,68,68,0.15);border-left:3px solid #ef4444;border-radius:3px;padding:8px 12px;">
+            <div style="font-size:11.5px;color:var(--text-dim);margin-bottom:3px;">나무의 연소</div>
+            <div style="font-family:Space Mono,monospace;font-size:11px;color:var(--text-dim);font-style:italic;">화학식 없음</div>
+          </div>
+          <div style="background:#1a1a2e;border:1px solid rgba(239,68,68,0.15);border-left:3px solid #ef4444;border-radius:3px;padding:8px 12px;">
+            <div style="font-size:11.5px;color:var(--text-dim);margin-bottom:3px;">석유의 연소</div>
+            <div style="font-family:Space Mono,monospace;font-size:11px;color:var(--text-dim);font-style:italic;">화학식 없음</div>
+          </div>
+          <div style="background:#1a1a2e;border:1px solid rgba(239,68,68,0.15);border-left:3px solid #ef4444;border-radius:3px;padding:8px 12px;">
+            <div style="font-size:11.5px;color:var(--text-dim);margin-bottom:3px;">천연가스 (메테인) 연소</div>
+            <div style="font-family:Space Mono,monospace;font-size:11px;color:var(--text);">CH₄ + 2O₂ → CO₂ + 2H₂O</div>
+          </div>
+          <div style="background:#1a1a2e;border:1px solid rgba(239,68,68,0.15);border-left:3px solid #ef4444;border-radius:3px;padding:8px 12px;">
+            <div style="font-size:11.5px;color:var(--text-dim);margin-bottom:3px;">철과 산소 (금속 녹슴)</div>
+            <div style="font-family:Space Mono,monospace;font-size:11px;color:var(--text);">4Fe + 3O₂ → 2Fe₂O₃</div>
+          </div>
+          <div style="background:#1a1a2e;border:1px solid rgba(239,68,68,0.15);border-left:3px solid #ef4444;border-radius:3px;padding:8px 12px;">
+            <div style="font-size:11.5px;color:var(--text-dim);margin-bottom:3px;">마그네슘과 염산 (금속+산)</div>
+            <div style="font-family:Space Mono,monospace;font-size:11px;color:var(--text);">Mg + 2HCl → MgCl₂ + H₂↑</div>
+          </div>
+          <div style="background:#1a1a2e;border:1px solid rgba(239,68,68,0.15);border-left:3px solid #ef4444;border-radius:3px;padding:8px 12px;">
+            <div style="font-size:11.5px;color:var(--text-dim);margin-bottom:3px;">염산 + 수산화나트륨 (산+염기)</div>
+            <div style="font-family:Space Mono,monospace;font-size:11px;color:var(--text);">HCl + NaOH → NaCl + H₂O</div>
+          </div>
+          <div style="background:#1a1a2e;border:1px solid rgba(239,68,68,0.15);border-left:3px solid #ef4444;border-radius:3px;padding:8px 12px;">
+            <div style="font-size:11.5px;color:var(--text-dim);margin-bottom:3px;">황산칼슘과 물</div>
+            <div style="font-family:Space Mono,monospace;font-size:11px;color:var(--text-dim);font-style:italic;">화학식 없음</div>
+          </div>
+          <div style="background:#1a1a2e;border:1px solid rgba(239,68,68,0.15);border-left:3px solid #ef4444;border-radius:3px;padding:8px 12px;">
+            <div style="font-size:11.5px;color:var(--text-dim);margin-bottom:3px;">산화칼슘과 물</div>
+            <div style="font-family:Space Mono,monospace;font-size:11px;color:var(--text);">CaO + H₂O → Ca(OH)₂</div>
+          </div>
+          <div style="background:#1a1a2e;border:1px solid rgba(239,68,68,0.15);border-left:3px solid #ef4444;border-radius:3px;padding:8px 12px;">
+            <div style="font-size:11.5px;color:var(--text-dim);margin-bottom:3px;">금속과 물 (나트륨)</div>
+            <div style="font-family:Space Mono,monospace;font-size:11px;color:var(--text);">2Na + 2H₂O → 2NaOH + H₂↑</div>
+          </div>
+        </div>
+      </div>
+      <!-- 흡열 -->
+      <div>
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;padding:8px 12px;background:rgba(59,130,246,0.08);border:1px solid rgba(59,130,246,0.2);border-radius:4px;">
+          <span style="font-size:16px;">❄️</span>
+          <span style="font-family:Space Mono,monospace;font-size:11px;font-weight:700;color:#60a5fa;letter-spacing:1px;">흡열 반응</span>
+          <span style="font-size:11px;color:var(--text-dim);margin-left:4px;">주위 온도 내려감</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:3px;">
+          <div style="background:#0d1b2a;border:1px solid rgba(59,130,246,0.15);border-left:3px solid #3b82f6;border-radius:3px;padding:8px 12px;">
+            <div style="font-size:11.5px;color:var(--text-dim);margin-bottom:3px;">탄산수소나트륨 분해</div>
+            <div style="font-family:Space Mono,monospace;font-size:11px;color:var(--text);">2NaHCO₃ → Na₂CO₃ + H₂O + CO₂↑</div>
+          </div>
+          <div style="background:#0d1b2a;border:1px solid rgba(59,130,246,0.15);border-left:3px solid #3b82f6;border-radius:3px;padding:8px 12px;">
+            <div style="font-size:11.5px;color:var(--text-dim);margin-bottom:3px;">수산화바륨 + 염화암모늄</div>
+            <div style="font-family:Space Mono,monospace;font-size:11px;color:var(--text);">Ba(OH)₂ + 2NH₄Cl → BaCl₂ + 2NH₃ + 2H₂O</div>
+          </div>
+          <div style="background:#0d1b2a;border:1px solid rgba(59,130,246,0.15);border-left:3px solid #3b82f6;border-radius:3px;padding:8px 12px;">
+            <div style="font-size:11.5px;color:var(--text-dim);margin-bottom:3px;">질소와 산소의 반응</div>
+            <div style="font-family:Space Mono,monospace;font-size:11px;color:var(--text);">N₂ + O₂ → 2NO</div>
+          </div>
+          <div style="background:#0d1b2a;border:1px solid rgba(59,130,246,0.15);border-left:3px solid #3b82f6;border-radius:3px;padding:8px 12px;">
+            <div style="font-size:11.5px;color:var(--text-dim);margin-bottom:3px;">수산화바륨 + 질산암모늄</div>
+            <div style="font-family:Space Mono,monospace;font-size:11px;color:var(--text);">Ba(OH)₂ + 2NH₄NO₃ → Ba(NO₃)₂ + 2NH₃ + 2H₂O</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 퀴즈 섹션 -->
+  <div class="section" id="quiz-section">
+    <div class="section-header">
+      <span class="section-num">06</span>
+      <h2 class="section-title" style="color:#a78bfa;">퀴즈</h2>
+      <span class="section-badge" style="background:rgba(167,139,250,0.1);border:1px solid rgba(167,139,250,0.3);color:#a78bfa;">질량비 제외</span>
+    </div>
+
+    <!-- 탭 -->
+    <div class="quiz-tabs">
+      <button class="quiz-tab active" onclick="switchTab('q1')">A. 물질명 → 화학식</button>
+      <button class="quiz-tab" onclick="switchTab('q2')">B. 반응식 빈칸</button>
+      <button class="quiz-tab" onclick="switchTab('q3')">C. 발열 / 흡열</button>
+      <button class="quiz-tab" onclick="switchTab('q4')">D. 기체 부피비</button>
+    </div>
+
+    <!-- 퀴즈 공통 컨트롤 -->
+    <div class="quiz-controls">
+      <button class="quiz-btn" id="startBtn" onclick="startQuiz()">🎯 시작</button>
+      <button class="quiz-btn secondary" id="nextBtn" onclick="nextQ()" style="display:none;">다음 →</button>
+      <div class="quiz-score" id="scoreBox" style="display:none;"></div>
+    </div>
+
+    <!-- 퀴즈 카드 영역 -->
+    <div id="quizArea" style="display:none;">
+      <div class="quiz-card" id="quizCard">
+        <div class="quiz-progress" id="quizProgress"></div>
+        <div class="quiz-question" id="quizQ"></div>
+        <div id="quizInput"></div>
+        <div class="quiz-feedback" id="quizFeedback" style="display:none;"></div>
+      </div>
+    </div>
+
+    <!-- 결과 화면 -->
+    <div id="resultArea" style="display:none;">
+      <div class="result-box">
+        <div class="result-emoji" id="resultEmoji"></div>
+        <div class="result-score" id="resultScore"></div>
+        <div class="result-msg" id="resultMsg"></div>
+        <button class="quiz-btn" onclick="restartQuiz()" style="margin-top:20px;">🔄 다시 풀기</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    3학년 과학 활동지 전체 범위 · 원자 수 전부 검토 완료
+  </div>
+
+</div>
+
+<script>
+// ── 데이터 ──
+const DATA = {
+  substances: [
+    {name:"수소",formula:"H₂"},{name:"산소",formula:"O₂"},{name:"질소",formula:"N₂"},
+    {name:"염소",formula:"Cl₂"},{name:"물",formula:"H₂O"},{name:"과산화수소",formula:"H₂O₂"},
+    {name:"암모니아",formula:"NH₃"},{name:"이산화탄소",formula:"CO₂"},{name:"일산화탄소",formula:"CO"},
+    {name:"일산화질소",formula:"NO"},{name:"이산화질소",formula:"NO₂"},{name:"염화수소",formula:"HCl"},
+    {name:"메테인",formula:"CH₄"},{name:"부탄",formula:"C₄H₁₀"},{name:"마그네슘",formula:"Mg"},
+    {name:"산화마그네슘",formula:"MgO"},{name:"구리",formula:"Cu"},{name:"산화구리(II)",formula:"CuO"},
+    {name:"철",formula:"Fe"},{name:"산화철(III)",formula:"Fe₂O₃"},{name:"나트륨",formula:"Na"},
+    {name:"아자이드화나트륨",formula:"NaN₃"},{name:"탄산나트륨",formula:"Na₂CO₃"},
+    {name:"염화나트륨",formula:"NaCl"},{name:"탄산칼슘",formula:"CaCO₃"},
+    {name:"염화칼슘",formula:"CaCl₂"},{name:"수산화칼슘",formula:"Ca(OH)₂"},
+    {name:"수산화바륨",formula:"Ba(OH)₂"},{name:"염화바륨",formula:"BaCl₂"},
+    {name:"염화암모늄",formula:"NH₄Cl"},{name:"탄산수소나트륨",formula:"NaHCO₃"},
+    {name:"수산화나트륨",formula:"NaOH"},{name:"염화마그네슘",formula:"MgCl₂"},
+    {name:"질산암모늄",formula:"NH₄NO₃"},
+  ],
+  reactions: [
+    {name:"물 생성", blank:"_H₂ + O₂ → _H₂O", answer:"2,2", hint:"계수: 앞 H₂, 뒤 H₂O"},
+    {name:"암모니아 생성", blank:"N₂ + _H₂ → _NH₃", answer:"3,2", hint:"계수: H₂, NH₃"},
+    {name:"메테인 연소", blank:"CH₄ + _O₂ → CO₂ + _H₂O", answer:"2,2", hint:"계수: O₂, H₂O"},
+    {name:"마그네슘 연소", blank:"_Mg + O₂ → _MgO", answer:"2,2", hint:"계수: Mg, MgO"},
+    {name:"구리 산화", blank:"_Cu + O₂ → _CuO", answer:"2,2", hint:"계수: Cu, CuO"},
+    {name:"과산화수소 분해", blank:"_H₂O₂ → _H₂O + O₂", answer:"2,2", hint:"계수: H₂O₂, H₂O"},
+    {name:"아자이드화나트륨 분해", blank:"_NaN₃ → _Na + _N₂", answer:"2,2,3", hint:"계수: NaN₃, Na, N₂"},
+    {name:"탄산나트륨+염화칼슘", blank:"Na₂CO₃ + CaCl₂ → CaCO₃↓ + _NaCl", answer:"2", hint:"계수: NaCl"},
+    {name:"마그네슘 + 염산", blank:"Mg + _HCl → MgCl₂ + H₂↑", answer:"2", hint:"계수: HCl"},
+    {name:"탄산수소나트륨 분해", blank:"_NaHCO₃ → Na₂CO₃ + H₂O + CO₂↑", answer:"2", hint:"계수: NaHCO₃"},
+    {name:"철 산화", blank:"_Fe + _O₂ → _Fe₂O₃", answer:"4,3,2", hint:"계수: Fe, O₂, Fe₂O₃"},
+    {name:"수산화바륨+염화암모늄", blank:"Ba(OH)₂ + _NH₄Cl → BaCl₂ + _NH₃ + _H₂O", answer:"2,2,2", hint:"계수: NH₄Cl, NH₃, H₂O"},
+  ],
+  energy: [
+    {rxn:"CH₄ + 2O₂ → CO₂ + 2H₂O", answer:"발열"},
+    {rxn:"4Fe + 3O₂ → 2Fe₂O₃", answer:"발열"},
+    {rxn:"Mg + 2HCl → MgCl₂ + H₂↑", answer:"발열"},
+    {rxn:"HCl + NaOH → NaCl + H₂O", answer:"발열"},
+    {rxn:"2H₂ + O₂ → 2H₂O", answer:"발열"},
+    {rxn:"CaO + H₂O → Ca(OH)₂", answer:"발열"},
+    {rxn:"2NaHCO₃ → Na₂CO₃ + H₂O + CO₂↑", answer:"흡열"},
+    {rxn:"Ba(OH)₂ + 2NH₄Cl → BaCl₂ + 2NH₃ + 2H₂O", answer:"흡열"},
+    {rxn:"N₂ + O₂ → 2NO", answer:"흡열"},
+    {rxn:"Ba(OH)₂ + 2NH₄NO₃ → Ba(NO₃)₂ + 2NH₃ + 2H₂O", answer:"흡열"},
+  ],
+  volumes: [
+    {name:"물 생성", rxn:"2H₂ + O₂ → 2H₂O", ratio:"2:1:2"},
+    {name:"암모니아 생성", rxn:"N₂ + 3H₂ → 2NH₃", ratio:"1:3:2"},
+    {name:"염화수소 생성", rxn:"H₂ + Cl₂ → 2HCl", ratio:"1:1:2"},
+    {name:"일산화탄소 생성", rxn:"2C + O₂ → 2CO", ratio:"2:1:2"},
+  ]
+};
+
+// ── 상태 ──
+let curTab = 'q1';
+let questions = [];
+let curIdx = 0;
+let score = 0;
+let answered = false;
+
+function switchTab(tab) {
+  curTab = tab;
+  document.querySelectorAll('.quiz-tab').forEach((t,i) => {
+    t.classList.toggle('active', ['q1','q2','q3','q4'][i] === tab);
+  });
+  resetQuiz();
+}
+
+function resetQuiz() {
+  curIdx = 0; score = 0; answered = false; questions = [];
+  document.getElementById('quizArea').style.display = 'none';
+  document.getElementById('resultArea').style.display = 'none';
+  document.getElementById('nextBtn').style.display = 'none';
+  document.getElementById('scoreBox').style.display = 'none';
+  document.getElementById('startBtn').style.display = 'inline-block';
+  document.getElementById('startBtn').textContent = '🎯 시작';
+}
+
+function shuffle(arr) { return [...arr].sort(() => Math.random() - 0.5); }
+
+function startQuiz() {
+  if (curTab === 'q1') {
+    questions = shuffle(DATA.substances).slice(0, 15);
+  } else if (curTab === 'q2') {
+    questions = shuffle(DATA.reactions).slice(0, 10);
+  } else if (curTab === 'q3') {
+    questions = shuffle(DATA.energy);
+  } else {
+    questions = shuffle(DATA.volumes);
+  }
+  curIdx = 0; score = 0; answered = false;
+  document.getElementById('startBtn').style.display = 'none';
+  document.getElementById('quizArea').style.display = 'block';
+  document.getElementById('resultArea').style.display = 'none';
+  document.getElementById('scoreBox').style.display = 'block';
+  renderQ();
+}
+
+function renderQ() {
+  answered = false;
+  document.getElementById('nextBtn').style.display = 'none';
+  document.getElementById('quizFeedback').style.display = 'none';
+  updateScore();
+
+  const q = questions[curIdx];
+  document.getElementById('quizProgress').textContent =
+    `Q ${curIdx+1} / ${questions.length}`;
+
+  const qEl = document.getElementById('quizQ');
+  const iEl = document.getElementById('quizInput');
+
+  if (curTab === 'q1') {
+    qEl.innerHTML = `다음 물질의 화학식을 입력하세요.<span class="highlight">${q.name}</span>`;
+    iEl.innerHTML = `
+      <input class="quiz-input" id="ansInput" placeholder="예) H₂O" autocomplete="off" onkeydown="if(event.key==='Enter')checkQ1()">
+      <button class="quiz-submit" onclick="checkQ1()">✓ 확인</button>`;
+    setTimeout(() => document.getElementById('ansInput')?.focus(), 100);
+
+  } else if (curTab === 'q2') {
+    qEl.innerHTML = `빈칸(_)에 들어갈 계수를 쉼표로 구분하여 입력하세요.<span class="highlight">${q.blank}</span>`;
+    iEl.innerHTML = `
+      <input class="quiz-input" id="ansInput" placeholder="예) 2,3" autocomplete="off" onkeydown="if(event.key==='Enter')checkQ2()">
+      <button class="quiz-submit" onclick="checkQ2()">✓ 확인</button>`;
+    setTimeout(() => document.getElementById('ansInput')?.focus(), 100);
+
+  } else if (curTab === 'q3') {
+    qEl.innerHTML = `다음 반응은 발열 반응인가요, 흡열 반응인가요?<span class="highlight">${q.rxn}</span>`;
+    iEl.innerHTML = `
+      <div class="quiz-options">
+        <button class="quiz-option" onclick="checkQ3(this,'발열')">🔥 발열 반응</button>
+        <button class="quiz-option" onclick="checkQ3(this,'흡열')">❄️ 흡열 반응</button>
+      </div>`;
+
+  } else {
+    qEl.innerHTML = `다음 반응의 기체 부피비를 입력하세요.<span class="highlight">${q.rxn}</span>`;
+    iEl.innerHTML = `
+      <input class="quiz-input" id="ansInput" placeholder="예) 2:1:2" autocomplete="off" onkeydown="if(event.key==='Enter')checkQ4()">
+      <button class="quiz-submit" onclick="checkQ4()">✓ 확인</button>`;
+    setTimeout(() => document.getElementById('ansInput')?.focus(), 100);
+  }
+}
+
+function normalize(s) { return s.replace(/\s/g,'').toLowerCase(); }
+
+function showFeedback(correct, msg) {
+  answered = true;
+  const fb = document.getElementById('quizFeedback');
+  fb.className = 'quiz-feedback ' + (correct ? 'ok' : 'ng');
+  fb.innerHTML = (correct ? '✅ 정답!' : '❌ 오답') + (msg ? '  ' + msg : '');
+  fb.style.display = 'block';
+  if (correct) score++;
+  updateScore();
+  document.getElementById('nextBtn').style.display = 'inline-block';
+}
+
+function checkQ1() {
+  if (answered) return;
+  const inp = document.getElementById('ansInput');
+  const userAns = normalize(inp.value);
+  const correct = normalize(questions[curIdx].formula);
+  const ok = userAns === correct;
+  inp.className = 'quiz-input ' + (ok ? 'correct' : 'wrong');
+  showFeedback(ok, ok ? '' : `정답: ${questions[curIdx].formula}`);
+}
+
+function checkQ2() {
+  if (answered) return;
+  const inp = document.getElementById('ansInput');
+  const userAns = normalize(inp.value).replace(/,/g,',');
+  const correct = normalize(questions[curIdx].answer);
+  const ok = userAns === correct;
+  inp.className = 'quiz-input ' + (ok ? 'correct' : 'wrong');
+  showFeedback(ok, ok ? `힌트: ${questions[curIdx].hint}` : `정답: ${questions[curIdx].answer}  (${questions[curIdx].hint})`);
+}
+
+function checkQ3(btn, choice) {
+  if (answered) return;
+  const correct = questions[curIdx].answer;
+  const ok = choice === correct;
+  document.querySelectorAll('.quiz-option').forEach(b => {
+    b.disabled = true;
+    const bChoice = b.textContent.includes('발열') ? '발열' : '흡열';
+    if (bChoice === correct) b.classList.add('correct');
+    else if (b === btn && !ok) b.classList.add('wrong');
+  });
+  showFeedback(ok, '');
+}
+
+function checkQ4() {
+  if (answered) return;
+  const inp = document.getElementById('ansInput');
+  const userAns = normalize(inp.value);
+  const correct = normalize(questions[curIdx].ratio);
+  const ok = userAns === correct;
+  inp.className = 'quiz-input ' + (ok ? 'correct' : 'wrong');
+  showFeedback(ok, ok ? '' : `정답: ${questions[curIdx].ratio}`);
+}
+
+function nextQ() {
+  curIdx++;
+  if (curIdx >= questions.length) showResult();
+  else renderQ();
+}
+
+function updateScore() {
+  document.getElementById('scoreBox').textContent = `점수 ${score} / ${questions.length}`;
+}
+
+function showResult() {
+  document.getElementById('quizArea').style.display = 'none';
+  document.getElementById('nextBtn').style.display = 'none';
+  document.getElementById('resultArea').style.display = 'block';
+  const pct = Math.round(score / questions.length * 100);
+  const emoji = pct === 100 ? '🏆' : pct >= 80 ? '🎉' : pct >= 60 ? '🙂' : '💪';
+  const msg = pct === 100 ? '완벽해요!' : pct >= 80 ? '잘했어요!' : pct >= 60 ? '조금 더 연습해봐요' : '다시 한번 도전!';
+  document.getElementById('resultEmoji').textContent = emoji;
+  document.getElementById('resultScore').textContent = `${score} / ${questions.length}  (${pct}%)`;
+  document.getElementById('resultMsg').textContent = msg;
+}
+
+function restartQuiz() {
+  document.getElementById('resultArea').style.display = 'none';
+  document.getElementById('startBtn').style.display = 'inline-block';
+  document.getElementById('startBtn').textContent = '🔄 다시 풀기';
+  document.getElementById('scoreBox').style.display = 'none';
+}
+</script>
+
+</body>
+</html>

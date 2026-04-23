@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>화학 종합 복습 퀴즈</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0a0e1a;
+  --surface: #111827;
+  --surface2: #1a2236;
+  --border: #1e2d45;
+  --purple: #a78bfa;
+  --purple-dark: #7c3aed;
+  --text: #e2e8f0;
+  --text-dim: #94a3b8;
+  --text-muted: #475569;
+  --green: #10b981;
+  --green-light: #34d399;
+  --red: #ef4444;
+  --red-light: #f87171;
+  --blue: #60a5fa;
+  --orange: #fb923c;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Noto Sans KR', sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    radial-gradient(circle at 20% 20%, rgba(167,139,250,0.08) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(96,165,250,0.06) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.wrap {
+  position: relative;
+  z-index: 1;
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 24px 16px 60px;
+  min-height: 100vh;
+}
+
+/* ── 헤더 ── */
+.top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 20px;
+  padding: 12px 16px;
+  background: rgba(17,24,39,0.6);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+.top-bar-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -0.3px;
+}
+
+.top-bar-title .emoji { font-size: 16px; margin-right: 4px; }
+
+.top-bar-meta {
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  color: var(--text-dim);
+}
+
+/* ── 홈 화면 ── */
+.home {
+  text-align: center;
+  padding: 20px 0;
+}
+
+.home-emoji {
+  font-size: 48px;
+  margin-bottom: 12px;
+}
+
+.home h1 {
+  font-size: clamp(26px, 6vw, 36px);
+  font-weight: 900;
+  letter-spacing: -1px;
+  line-height: 1.15;
+  background: linear-gradient(135deg, #e2e8f0 0%, #a78bfa 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 8px;
+}
+
+.home-sub {
+  color: var(--text-dim);
+  font-size: 13px;
+  margin-bottom: 32px;
+  line-height: 1.6;
+}
+
+.mode-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.mode-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 18px 14px;
+  text-align: left;
+  cursor: pointer;
+  transition: transform 0.15s, border-color 0.2s, background 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+
+.mode-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: var(--card-accent, var(--purple));
+}
+
+.mode-card:active { transform: scale(0.97); }
+.mode-card:hover { border-color: var(--card-accent, var(--purple)); background: var(--surface2); }
+
+.mode-card.m1 { --card-accent: #60a5fa; }
+.mode-card.m2 { --card-accent: #22d3ee; }
+.mode-card.m3 { --card-accent: #f87171; }
+.mode-card.m4 { --card-accent: #34d399; }
+.mode-card.m5 { --card-accent: #a78bfa; }
+.mode-card.m6 { --card-accent: #fbbf24; }
+
+.mode-emoji {
+  font-size: 24px;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.mode-title {
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.mode-desc {
+  font-size: 11px;
+  color: var(--text-dim);
+  line-height: 1.4;
+}
+
+.mode-count {
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  color: var(--card-accent, var(--purple));
+  margin-top: 6px;
+  letter-spacing: 0.5px;
+}
+
+/* 종합 모드 - 전폭 */
+.mode-card.full {
+  grid-column: 1 / -1;
+  padding: 20px;
+}
+
+.mode-card.full .mode-emoji { font-size: 28px; }
+.mode-card.full .mode-title { font-size: 15px; }
+
+/* ── 퀴즈 화면 ── */
+.quiz-screen { display: none; }
+.quiz-screen.active { display: block; }
+
+.progress-bar {
+  height: 6px;
+  background: var(--surface);
+  border-radius: 3px;
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--purple-dark), var(--purple));
+  transition: width 0.4s ease;
+  border-radius: 3px;
+}
+
+.quiz-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+}
+
+.quiz-info .q-num { color: var(--text-dim); letter-spacing: 1px; }
+.quiz-info .q-score { color: var(--purple); }
+
+.quiz-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 24px 20px;
+  margin-bottom: 16px;
+}
+
+.q-type {
+  display: inline-block;
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 12px;
+  margin-bottom: 14px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.q-type.t1 { background: rgba(96,165,250,0.12); color: #60a5fa; border: 1px solid rgba(96,165,250,0.3); }
+.q-type.t2 { background: rgba(34,211,238,0.12); color: #22d3ee; border: 1px solid rgba(34,211,238,0.3); }
+.q-type.t3 { background: rgba(248,113,113,0.12); color: #f87171; border: 1px solid rgba(248,113,113,0.3); }
+.q-type.t4 { background: rgba(52,211,153,0.12); color: #34d399; border: 1px solid rgba(52,211,153,0.3); }
+.q-type.t5 { background: rgba(251,191,36,0.12); color: #fbbf24; border: 1px solid rgba(251,191,36,0.3); }
+
+.q-prompt {
+  font-size: 15px;
+  color: var(--text);
+  line-height: 1.6;
+  margin-bottom: 12px;
+}
+
+.q-subject {
+  font-family: 'Space Mono', monospace;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--purple);
+  margin: 12px 0 8px;
+  word-break: break-all;
+  line-height: 1.4;
+  padding: 14px 16px;
+  background: rgba(167,139,250,0.08);
+  border-left: 3px solid var(--purple);
+  border-radius: 6px;
+}
+
+.q-subject.small {
+  font-size: 16px;
+}
+
+.q-hint {
+  font-size: 11px;
+  color: var(--text-dim);
+  margin-top: 6px;
+  font-style: italic;
+}
+
+.input-wrap {
+  margin-top: 12px;
+}
+
+.quiz-input {
+  font-family: 'Space Mono', monospace;
+  font-size: 17px;
+  padding: 14px 16px;
+  background: var(--surface2);
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  color: var(--text);
+  width: 100%;
+  outline: none;
+  transition: border-color 0.2s;
+  -webkit-appearance: none;
+}
+
+.quiz-input:focus { border-color: var(--purple); }
+.quiz-input.correct { border-color: var(--green); background: rgba(16,185,129,0.08); }
+.quiz-input.wrong { border-color: var(--red); background: rgba(239,68,68,0.08); }
+
+.input-helper {
+  font-size: 11px;
+  color: var(--text-dim);
+  margin-top: 6px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.input-helper .icon { color: var(--purple); }
+
+.options {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.option {
+  font-family: 'Space Mono', monospace;
+  font-size: 14px;
+  padding: 14px 16px;
+  background: var(--surface2);
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  color: var(--text);
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.15s;
+  line-height: 1.5;
+}
+
+.option:active { transform: scale(0.98); }
+.option:hover:not(:disabled) { border-color: var(--purple); background: rgba(124,58,237,0.1); }
+.option.correct { border-color: var(--green) !important; background: rgba(16,185,129,0.15) !important; color: var(--green-light) !important; font-weight: 700; }
+.option.wrong { border-color: var(--red) !important; background: rgba(239,68,68,0.12) !important; color: var(--red-light) !important; }
+
+.option-2col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.option-2col .option {
+  text-align: center;
+  font-size: 16px;
+  padding: 18px 12px;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-weight: 700;
+}
+
+.btn {
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  padding: 14px 22px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+  width: 100%;
+}
+
+.btn:active { transform: scale(0.98); }
+
+.btn-primary {
+  background: var(--purple-dark);
+  color: white;
+}
+.btn-primary:hover { background: #6d28d9; }
+
+.btn-secondary {
+  background: var(--surface2);
+  color: var(--text);
+  border: 1px solid var(--border);
+}
+.btn-secondary:hover { border-color: var(--purple); }
+
+.feedback {
+  margin-top: 16px;
+  padding: 14px 16px;
+  border-radius: 10px;
+  font-size: 13px;
+  line-height: 1.6;
+  animation: slideDown 0.3s ease;
+}
+
+.feedback.ok {
+  background: rgba(16,185,129,0.12);
+  border: 1px solid rgba(16,185,129,0.3);
+  color: var(--green-light);
+}
+.feedback.ng {
+  background: rgba(239,68,68,0.12);
+  border: 1px solid rgba(239,68,68,0.3);
+  color: var(--red-light);
+}
+
+.feedback-head {
+  font-weight: 700;
+  margin-bottom: 4px;
+  font-size: 14px;
+}
+
+.feedback-body {
+  font-family: 'Space Mono', monospace;
+  font-size: 13px;
+  opacity: 0.95;
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.btn-row {
+  display: flex;
+  gap: 10px;
+}
+
+.btn-row .btn { flex: 1; }
+
+/* ── 결과 화면 ── */
+.result {
+  text-align: center;
+  padding: 32px 24px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+}
+
+.result-emoji {
+  font-size: 64px;
+  margin-bottom: 16px;
+}
+
+.result-score {
+  font-family: 'Space Mono', monospace;
+  font-size: 42px;
+  font-weight: 900;
+  color: var(--purple);
+  margin-bottom: 4px;
+  line-height: 1;
+}
+
+.result-pct {
+  font-size: 13px;
+  color: var(--text-dim);
+  margin-bottom: 20px;
+}
+
+.result-msg {
+  font-size: 15px;
+  font-weight: 700;
+  margin-bottom: 24px;
+  color: var(--text);
+}
+
+.wrong-list {
+  text-align: left;
+  margin-top: 20px;
+  padding: 16px;
+  background: var(--surface2);
+  border-radius: 10px;
+  max-height: 240px;
+  overflow-y: auto;
+}
+
+.wrong-list-title {
+  font-size: 12px;
+  color: var(--text-dim);
+  font-weight: 700;
+  margin-bottom: 10px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.wrong-item {
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 12px;
+}
+
+.wrong-item:last-child { border: none; }
+
+.wrong-q { color: var(--text-dim); margin-bottom: 3px; }
+.wrong-a { font-family: 'Space Mono', monospace; color: var(--green-light); font-weight: 700; }
+
+/* 모바일 */
+@media (max-width: 480px) {
+  .wrap { padding: 16px 12px 40px; }
+  .mode-grid { gap: 8px; }
+  .mode-card { padding: 14px 12px; }
+  .quiz-card { padding: 20px 16px; }
+  .q-subject { font-size: 18px; padding: 12px 14px; }
+  .q-subject.small { font-size: 14px; }
+  .option { font-size: 13px; padding: 12px 14px; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- 상단 바 -->
+  <div class="top-bar">
+    <div class="top-bar-title"><span class="emoji">🧪</span>화학 복습 퀴즈</div>
+    <div class="top-bar-meta" id="topMeta">3학년 과학 전체</div>
+  </div>
+
+  <!-- 홈 화면 -->
+  <div id="homeScreen">
+    <div class="home">
+      <div class="home-emoji">🎯</div>
+      <h1>복습 모드 선택</h1>
+      <p class="home-sub">원하는 분야를 골라 집중 훈련하거나<br>종합 모드로 전체를 복습하세요</p>
+    </div>
+
+    <div class="mode-grid">
+      <div class="mode-card full" onclick="startQuiz('full')">
+        <span class="mode-emoji">🏆</span>
+        <div class="mode-title">종합 복습</div>
+        <div class="mode-desc">전체 내용에서 골고루 출제 (랜덤 20문제)</div>
+        <div class="mode-count" style="--card-accent:#a78bfa;">★ 모든 카테고리</div>
+      </div>
+
+      <div class="mode-card m1" onclick="startQuiz('name2formula')">
+        <span class="mode-emoji">🧬</span>
+        <div class="mode-title">물질명 → 화학식</div>
+        <div class="mode-desc">물질 이름 보고 화학식 입력</div>
+        <div class="mode-count">15 문제</div>
+      </div>
+
+      <div class="mode-card m2" onclick="startQuiz('formula2name')">
+        <span class="mode-emoji">🔬</span>
+        <div class="mode-title">화학식 → 물질명</div>
+        <div class="mode-desc">화학식 보고 물질명 맞추기</div>
+        <div class="mode-count">15 문제</div>
+      </div>
+
+      <div class="mode-card m3" onclick="startQuiz('energy')">
+        <span class="mode-emoji">🔥</span>
+        <div class="mode-title">발열 / 흡열</div>
+        <div class="mode-desc">반응을 보고 발열·흡열 구분</div>
+        <div class="mode-count">14 문제</div>
+      </div>
+
+      <div class="mode-card m4" onclick="startQuiz('volume')">
+        <span class="mode-emoji">💨</span>
+        <div class="mode-title">기체 부피비</div>
+        <div class="mode-desc">반응식의 부피비 맞추기</div>
+        <div class="mode-count">4 문제</div>
+      </div>
+
+      <div class="mode-card m5" onclick="startQuiz('balance')">
+        <span class="mode-emoji">⚖️</span>
+        <div class="mode-title">반응식 계수</div>
+        <div class="mode-desc">빈칸에 들어갈 계수 입력</div>
+        <div class="mode-count">12 문제</div>
+      </div>
+
+      <div class="mode-card m6" onclick="startQuiz('mass')">
+        <span class="mode-emoji">📊</span>
+        <div class="mode-title">질량비</div>
+        <div class="mode-desc">화합물의 성분 질량비 맞추기</div>
+        <div class="mode-count">6 문제</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 퀴즈 화면 -->
+  <div id="quizScreen" class="quiz-screen">
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="quiz-info">
+      <span class="q-num" id="qNum">Q 1 / 10</span>
+      <span class="q-score" id="qScore">0 점</span>
+    </div>
+    <div class="quiz-card">
+      <span class="q-type" id="qType">물질명 → 화학식</span>
+      <div class="q-prompt" id="qPrompt"></div>
+      <div id="qContent"></div>
+      <div id="feedback"></div>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-secondary" onclick="goHome()">홈으로</button>
+      <button class="btn btn-primary" id="nextBtn" style="display:none;" onclick="nextQ()">다음 →</button>
+    </div>
+  </div>
+
+  <!-- 결과 화면 -->
+  <div id="resultScreen" class="quiz-screen">
+    <div class="result">
+      <div class="result-emoji" id="rEmoji"></div>
+      <div class="result-score" id="rScore"></div>
+      <div class="result-pct" id="rPct"></div>
+      <div class="result-msg" id="rMsg"></div>
+      <div class="btn-row">
+        <button class="btn btn-secondary" onclick="goHome()">홈으로</button>
+        <button class="btn btn-primary" onclick="retry()">🔄 다시 풀기</button>
+      </div>
+      <div class="wrong-list" id="wrongList" style="display:none;">
+        <div class="wrong-list-title">❌ 틀린 문제 복습</div>
+        <div id="wrongItems"></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ══════════ 데이터 ══════════
+const SUBSTANCES = [
+  {name:"수소",formula:"H₂"},{name:"산소",formula:"O₂"},{name:"질소",formula:"N₂"},
+  {name:"염소",formula:"Cl₂"},{name:"물",formula:"H₂O"},{name:"과산화수소",formula:"H₂O₂"},
+  {name:"암모니아",formula:"NH₃"},{name:"이산화탄소",formula:"CO₂"},{name:"일산화탄소",formula:"CO"},
+  {name:"일산화질소",formula:"NO"},{name:"이산화질소",formula:"NO₂"},{name:"염화수소",formula:"HCl"},
+  {name:"메테인",formula:"CH₄"},{name:"부탄",formula:"C₄H₁₀"},{name:"아세트산",formula:"CH₃COOH"},
+  {name:"마그네슘",formula:"Mg"},{name:"산화마그네슘",formula:"MgO"},{name:"구리",formula:"Cu"},
+  {name:"산화구리(II)",formula:"CuO"},{name:"철",formula:"Fe"},{name:"산화철(III)",formula:"Fe₂O₃"},
+  {name:"나트륨",formula:"Na"},{name:"아자이드화나트륨",formula:"NaN₃"},{name:"탄산나트륨",formula:"Na₂CO₃"},
+  {name:"염화나트륨",formula:"NaCl"},{name:"탄산칼슘",formula:"CaCO₃"},{name:"염화칼슘",formula:"CaCl₂"},
+  {name:"수산화칼슘",formula:"Ca(OH)₂"},{name:"수산화바륨",formula:"Ba(OH)₂"},{name:"염화바륨",formula:"BaCl₂"},
+  {name:"염화암모늄",formula:"NH₄Cl"},{name:"탄산수소나트륨",formula:"NaHCO₃"},{name:"수산화나트륨",formula:"NaOH"},
+  {name:"염화마그네슘",formula:"MgCl₂"},{name:"질산암모늄",formula:"NH₄NO₃"},{name:"질산바륨",formula:"Ba(NO₃)₂"}
+];
+
+const REACTIONS_BALANCE = [
+  {name:"물 생성", blank:"[_]H₂ + O₂ → [_]H₂O", answer:[2,2]},
+  {name:"암모니아 생성", blank:"N₂ + [_]H₂ → [_]NH₃", answer:[3,2]},
+  {name:"메테인 연소", blank:"CH₄ + [_]O₂ → CO₂ + [_]H₂O", answer:[2,2]},
+  {name:"마그네슘 연소", blank:"[_]Mg + O₂ → [_]MgO", answer:[2,2]},
+  {name:"구리 산화", blank:"[_]Cu + O₂ → [_]CuO", answer:[2,2]},
+  {name:"과산화수소 분해", blank:"[_]H₂O₂ → [_]H₂O + O₂", answer:[2,2]},
+  {name:"아자이드화나트륨 분해", blank:"[_]NaN₃ → [_]Na + [_]N₂", answer:[2,2,3]},
+  {name:"탄산나트륨+염화칼슘", blank:"Na₂CO₃ + CaCl₂ → CaCO₃ + [_]NaCl", answer:[2]},
+  {name:"마그네슘+염산", blank:"Mg + [_]HCl → MgCl₂ + H₂", answer:[2]},
+  {name:"탄산수소나트륨 분해", blank:"[_]NaHCO₃ → Na₂CO₃ + H₂O + CO₂", answer:[2]},
+  {name:"철 산화", blank:"[_]Fe + [_]O₂ → [_]Fe₂O₃", answer:[4,3,2]},
+  {name:"수산화바륨+염화암모늄", blank:"Ba(OH)₂ + [_]NH₄Cl → BaCl₂ + [_]NH₃ + [_]H₂O", answer:[2,2,2]},
+];
+
+const ENERGY = [
+  {rxn:"CH₄ + 2O₂ → CO₂ + 2H₂O", type:"발열", hint:"메테인 연소"},
+  {rxn:"4Fe + 3O₂ → 2Fe₂O₃", type:"발열", hint:"철 산화 (금속 녹슴)"},
+  {rxn:"Mg + 2HCl → MgCl₂ + H₂", type:"발열", hint:"금속 + 산 반응"},
+  {rxn:"HCl + NaOH → NaCl + H₂O", type:"발열", hint:"중화반응 (산+염기)"},
+  {rxn:"2H₂ + O₂ → 2H₂O", type:"발열", hint:"수소 연소"},
+  {rxn:"CaO + H₂O → Ca(OH)₂", type:"발열", hint:"산화칼슘 + 물"},
+  {rxn:"2Na + 2H₂O → 2NaOH + H₂", type:"발열", hint:"금속 + 물"},
+  {rxn:"나무 / 석유 연소", type:"발열", hint:"연소 반응"},
+  {rxn:"황산칼슘 + 물", type:"발열", hint:"석고 굳는 반응"},
+  {rxn:"2NaHCO₃ → Na₂CO₃ + H₂O + CO₂", type:"흡열", hint:"탄산수소나트륨 분해"},
+  {rxn:"Ba(OH)₂ + 2NH₄Cl → BaCl₂ + 2NH₃ + 2H₂O", type:"흡열", hint:"수산화바륨 + 염화암모늄"},
+  {rxn:"N₂ + O₂ → 2NO", type:"흡열", hint:"질소 + 산소"},
+  {rxn:"Ba(OH)₂ + 2NH₄NO₃ → Ba(NO₃)₂ + 2NH₃ + 2H₂O", type:"흡열", hint:"수산화바륨 + 질산암모늄"},
+  {rxn:"2H₂O → 2H₂ + O₂", type:"흡열", hint:"전기분해"},
+];
+
+const VOLUMES = [
+  {name:"물 생성", rxn:"2H₂ + O₂ → 2H₂O", ratio:"2:1:2"},
+  {name:"암모니아 생성", rxn:"N₂ + 3H₂ → 2NH₃", ratio:"1:3:2"},
+  {name:"염화수소 생성", rxn:"H₂ + Cl₂ → 2HCl", ratio:"1:1:2"},
+  {name:"일산화탄소 생성", rxn:"2C + O₂ → 2CO", ratio:"2:1:2"},
+];
+
+const MASS_RATIOS = [
+  {compound:"물 (H : O)", ratio:"1:8"},
+  {compound:"과산화수소 (H : O)", ratio:"1:16"},
+  {compound:"암모니아 (N : H)", ratio:"14:3"},
+  {compound:"산화마그네슘 (Mg : O : MgO)", ratio:"3:2:5"},
+  {compound:"산화구리(II) (Cu : O : CuO)", ratio:"4:1:5"},
+  {compound:"산화철(III) (Fe : O)", ratio:"7:3"},
+];
+
+// ══════════ 유틸 ══════════
+
+// 아래첨자 변환 맵
+const SUB_MAP = {'0':'₀','1':'₁','2':'₂','3':'₃','4':'₄','5':'₅','6':'₆','7':'₇','8':'₈','9':'₉'};
+const SUB_REV = {'₀':'0','₁':'1','₂':'2','₃':'3','₄':'4','₅':'5','₆':'6','₇':'7','₈':'8','₉':'9'};
+
+// 입력값 정규화: 아래첨자 → 일반 숫자, 공백 제거, 소문자 Cl 등 정리
+function normalizeFormula(s) {
+  if (!s) return '';
+  return s
+    .replace(/[₀₁₂₃₄₅₆₇₈₉]/g, c => SUB_REV[c])
+    .replace(/\s+/g, '')
+    .replace(/↓|↑/g, '')
+    .trim();
+}
+
+// 같은 화학식인지 비교 (일반 숫자 / 아래첨자 둘 다 OK)
+function isFormulaMatch(user, answer) {
+  return normalizeFormula(user).toLowerCase() === normalizeFormula(answer).toLowerCase();
+}
+
+// 물질명 비교: 공백/괄호 유연하게
+function isNameMatch(user, answer) {
+  const norm = s => s.replace(/\s+/g,'').replace(/[()（）]/g,'').toLowerCase();
+  return norm(user) === norm(answer);
+}
+
+// 비율 비교 (공백 제거)
+function isRatioMatch(user, answer) {
+  const norm = s => s.replace(/\s+/g,'').replace(/：/g,':');
+  return norm(user) === norm(answer);
+}
+
+function shuffle(arr) { return [...arr].sort(() => Math.random() - 0.5); }
+function pickN(arr, n) { return shuffle(arr).slice(0, n); }
+
+// ══════════ 상태 ══════════
+let curMode = null;
+let questions = [];
+let curIdx = 0;
+let score = 0;
+let wrongQs = [];
+let answered = false;
+
+// ══════════ 퀴즈 생성 ══════════
+function buildQuestions(mode) {
+  let qs = [];
+  if (mode === 'name2formula') {
+    qs = pickN(SUBSTANCES, 15).map(s => ({
+      type: 'name2formula',
+      prompt: '다음 물질의 <strong>화학식</strong>을 입력하세요',
+      subject: s.name,
+      answer: s.formula,
+      check: (u, a) => isFormulaMatch(u, a),
+      helper: '💡 일반 숫자(H2O) 또는 아래첨자(H₂O) 둘 다 인정돼요'
+    }));
+  } else if (mode === 'formula2name') {
+    qs = pickN(SUBSTANCES, 15).map(s => {
+      const wrongs = pickN(SUBSTANCES.filter(x => x.name !== s.name), 3).map(x => x.name);
+      const opts = shuffle([s.name, ...wrongs]);
+      return {
+        type: 'formula2name',
+        prompt: '다음 화학식의 <strong>물질명</strong>은?',
+        subject: s.formula,
+        answer: s.name,
+        options: opts,
+        check: (u, a) => isNameMatch(u, a)
+      };
+    });
+  } else if (mode === 'energy') {
+    qs = shuffle(ENERGY).map(e => ({
+      type: 'energy',
+      prompt: '다음 반응은 <strong>발열</strong>인가요, <strong>흡열</strong>인가요?',
+      subject: e.rxn,
+      answer: e.type,
+      options: ['발열', '흡열'],
+      hint: e.hint,
+      check: (u, a) => u === a
+    }));
+  } else if (mode === 'volume') {
+    qs = shuffle(VOLUMES).map(v => ({
+      type: 'volume',
+      prompt: `<strong>${v.name}</strong> 반응의 기체 부피비는?`,
+      subject: v.rxn,
+      answer: v.ratio,
+      check: (u, a) => isRatioMatch(u, a),
+      helper: '💡 예: 2:1:2  (콜론으로 구분)'
+    }));
+  } else if (mode === 'balance') {
+    qs = shuffle(REACTIONS_BALANCE).map(r => ({
+      type: 'balance',
+      prompt: `<strong>${r.name}</strong> 반응의 빈칸 계수를 입력하세요`,
+      subject: r.blank,
+      answer: r.answer.join(','),
+      check: (u, a) => {
+        const userNums = u.replace(/\s+/g,'').split(/[,\s]+/).filter(Boolean);
+        const ansNums = a.split(',');
+        return userNums.length === ansNums.length &&
+               userNums.every((n, i) => n === ansNums[i]);
+      },
+      helper: `💡 빈칸 ${r.answer.length}개, 쉼표로 구분 (예: ${r.answer.join(',')})`
+    }));
+  } else if (mode === 'mass') {
+    qs = shuffle(MASS_RATIOS).map(m => ({
+      type: 'mass',
+      prompt: '다음 화합물의 <strong>질량비</strong>는?',
+      subject: m.compound,
+      smallSubject: true,
+      answer: m.ratio,
+      check: (u, a) => isRatioMatch(u, a),
+      helper: '💡 예: 1:8  (콜론으로 구분)'
+    }));
+  } else if (mode === 'full') {
+    // 종합: 각 카테고리에서 골고루
+    const mix = [
+      ...buildQuestions('name2formula').slice(0, 5),
+      ...buildQuestions('formula2name').slice(0, 4),
+      ...buildQuestions('energy').slice(0, 4),
+      ...buildQuestions('balance').slice(0, 4),
+      ...buildQuestions('volume').slice(0, 2),
+      ...buildQuestions('mass').slice(0, 1),
+    ];
+    qs = shuffle(mix);
+  }
+  return qs;
+}
+
+// ══════════ 화면 전환 ══════════
+function show(screen) {
+  ['homeScreen','quizScreen','resultScreen'].forEach(id => {
+    document.getElementById(id).style.display = 'none';
+    document.getElementById(id).classList.remove('active');
+  });
+  const el = document.getElementById(screen);
+  el.style.display = 'block';
+  el.classList.add('active');
+}
+
+function goHome() {
+  show('homeScreen');
+  document.getElementById('topMeta').textContent = '3학년 과학 전체';
+}
+
+function startQuiz(mode) {
+  curMode = mode;
+  questions = buildQuestions(mode);
+  curIdx = 0;
+  score = 0;
+  wrongQs = [];
+  show('quizScreen');
+  renderQ();
+}
+
+function retry() {
+  startQuiz(curMode);
+}
+
+// ══════════ 문제 렌더링 ══════════
+const TYPE_LABELS = {
+  name2formula: {t:'🧬 물질명 → 화학식', cls:'t1'},
+  formula2name: {t:'🔬 화학식 → 물질명', cls:'t2'},
+  energy: {t:'🔥 발열 / 흡열', cls:'t3'},
+  volume: {t:'💨 기체 부피비', cls:'t4'},
+  balance: {t:'⚖️ 반응식 계수', cls:'t5'},
+  mass: {t:'📊 질량비', cls:'t5'},
+};
+
+function renderQ() {
+  answered = false;
+  const q = questions[curIdx];
+  const tl = TYPE_LABELS[q.type];
+
+  document.getElementById('qType').textContent = tl.t;
+  document.getElementById('qType').className = 'q-type ' + tl.cls;
+  document.getElementById('qNum').textContent = `Q ${curIdx+1} / ${questions.length}`;
+  document.getElementById('qScore').textContent = `${score} 점`;
+  document.getElementById('progressFill').style.width = `${(curIdx / questions.length) * 100}%`;
+  document.getElementById('qPrompt').innerHTML = q.prompt;
+
+  const contentEl = document.getElementById('qContent');
+
+  let subjectHTML = `<div class="q-subject ${q.smallSubject ? 'small' : ''}">${q.subject}</div>`;
+
+  if (q.options && q.type === 'energy') {
+    // 2컬럼 발열/흡열
+    contentEl.innerHTML = subjectHTML + `
+      <div class="options option-2col">
+        ${q.options.map(opt => `
+          <button class="option" onclick="checkChoice(this, '${opt}')">
+            ${opt === '발열' ? '🔥 발열' : '❄️ 흡열'}
+          </button>
+        `).join('')}
+      </div>`;
+  } else if (q.options) {
+    // 일반 객관식
+    contentEl.innerHTML = subjectHTML + `
+      <div class="options">
+        ${q.options.map(opt => `
+          <button class="option" onclick="checkChoice(this, \`${opt.replace(/`/g,'\\`')}\`)">${opt}</button>
+        `).join('')}
+      </div>`;
+  } else {
+    // 입력형
+    const placeholder = q.type === 'balance' ? '예: 2,2' :
+                        q.type === 'volume' || q.type === 'mass' ? '예: 2:1:2' :
+                        q.type === 'name2formula' ? '예: H2O' : '';
+    contentEl.innerHTML = subjectHTML + `
+      <div class="input-wrap">
+        <input type="text" class="quiz-input" id="ansInput" placeholder="${placeholder}" autocomplete="off" inputmode="text">
+        ${q.helper ? `<div class="input-helper"><span class="icon">💡</span>${q.helper.replace('💡 ','')}</div>` : ''}
+      </div>
+      <button class="btn btn-primary" style="margin-top:12px;" onclick="checkInput()">✓ 정답 확인</button>`;
+
+    const inp = document.getElementById('ansInput');
+    setTimeout(() => inp?.focus(), 50);
+    inp?.addEventListener('keydown', e => {
+      if (e.key === 'Enter') checkInput();
+    });
+  }
+
+  document.getElementById('feedback').innerHTML = '';
+  document.getElementById('nextBtn').style.display = 'none';
+  document.getElementById('topMeta').textContent = tl.t.replace(/^\S+\s/, '');
+}
+
+// ══════════ 정답 체크 ══════════
+function checkInput() {
+  if (answered) return;
+  const q = questions[curIdx];
+  const inp = document.getElementById('ansInput');
+  const userAns = inp.value.trim();
+  if (!userAns) { inp.focus(); return; }
+
+  const ok = q.check(userAns, q.answer);
+  inp.classList.add(ok ? 'correct' : 'wrong');
+  inp.disabled = true;
+  handleAnswer(ok);
+}
+
+function checkChoice(btn, choice) {
+  if (answered) return;
+  const q = questions[curIdx];
+  const ok = q.check(choice, q.answer);
+
+  document.querySelectorAll('.option').forEach(b => {
+    b.disabled = true;
+    const bText = b.textContent.trim().replace(/^[🔥❄️]\s*/, '');
+    if (bText === q.answer || b.textContent.includes(q.answer)) {
+      b.classList.add('correct');
+    } else if (b === btn && !ok) {
+      b.classList.add('wrong');
+    }
+  });
+  handleAnswer(ok);
+}
+
+function handleAnswer(ok) {
+  answered = true;
+  const q = questions[curIdx];
+  const fb = document.getElementById('feedback');
+
+  if (ok) {
+    score++;
+    let body = '';
+    if (q.hint) body = `<div class="feedback-body">${q.hint}</div>`;
+    fb.innerHTML = `<div class="feedback ok"><div class="feedback-head">✅ 정답!</div>${body}</div>`;
+  } else {
+    wrongQs.push({
+      q: q.subject,
+      a: q.answer,
+      prompt: q.prompt.replace(/<[^>]+>/g,'')
+    });
+    let body = `<div class="feedback-body">정답: ${q.answer}`;
+    if (q.hint) body += ` <span style="opacity:0.7;">· ${q.hint}</span>`;
+    body += '</div>';
+    fb.innerHTML = `<div class="feedback ng"><div class="feedback-head">❌ 오답</div>${body}</div>`;
+  }
+
+  document.getElementById('qScore').textContent = `${score} 점`;
+  document.getElementById('nextBtn').style.display = 'block';
+  document.getElementById('nextBtn').textContent =
+    curIdx === questions.length - 1 ? '결과 보기 →' : '다음 →';
+}
+
+function nextQ() {
+  curIdx++;
+  if (curIdx >= questions.length) {
+    showResult();
+  } else {
+    renderQ();
+  }
+}
+
+// ══════════ 결과 ══════════
+function showResult() {
+  show('resultScreen');
+  const total = questions.length;
+  const pct = Math.round(score / total * 100);
+
+  let emoji, msg;
+  if (pct === 100) { emoji = '🏆'; msg = '완벽해요! 모두 맞췄어요!'; }
+  else if (pct >= 90) { emoji = '🎉'; msg = '대단해요! 거의 완벽!'; }
+  else if (pct >= 75) { emoji = '👏'; msg = '잘했어요! 조금만 더!'; }
+  else if (pct >= 60) { emoji = '💪'; msg = '괜찮아요! 복습하면 완벽!'; }
+  else if (pct >= 40) { emoji = '📚'; msg = '조금 더 공부해봐요'; }
+  else { emoji = '🔥'; msg = '다시 정리하고 도전해요!'; }
+
+  document.getElementById('rEmoji').textContent = emoji;
+  document.getElementById('rScore').textContent = `${score} / ${total}`;
+  document.getElementById('rPct').textContent = `정답률 ${pct}%`;
+  document.getElementById('rMsg').textContent = msg;
+
+  const wrongList = document.getElementById('wrongList');
+  const wrongItems = document.getElementById('wrongItems');
+  if (wrongQs.length > 0) {
+    wrongList.style.display = 'block';
+    wrongItems.innerHTML = wrongQs.map(w => `
+      <div class="wrong-item">
+        <div class="wrong-q">${w.prompt} — ${w.q}</div>
+        <div class="wrong-a">✓ ${w.a}</div>
+      </div>
+    `).join('');
+  } else {
+    wrongList.style.display = 'none';
+  }
+}
+
+// 시작 시 홈 화면
+show('homeScreen');
+</script>
+</body>
+</html>

@@ -173,7 +173,10 @@ const outer = new THREE.Mesh(new THREE.PlaneGeometry(9000, 9000), new THREE.Mesh
 outer.rotation.x = -Math.PI/2; outer.position.set(gc.x, -0.3, gc.z); outer.receiveShadow = true; scene.add(outer);
 const CFG = window.HONGDAE_CONFIG || {};
 const qs = new URLSearchParams(location.search);
-const VKEY = (qs.get('vkey') || CFG.vworldKey || '').trim();
+let savedKey = ''; try { savedKey = localStorage.getItem('hongdae-vkey') || ''; } catch(e){}
+if (qs.get('vkey')) { try { localStorage.setItem('hongdae-vkey', qs.get('vkey').trim()); } catch(e){} }
+if (qs.get('vkey') === '') { try { localStorage.removeItem('hongdae-vkey'); } catch(e){} savedKey = ''; }
+const VKEY = (qs.get('vkey') || CFG.vworldKey || savedKey || '').trim();
 let SRC = VKEY && qs.get('src') !== 'osm' ? 'vworld' : 'osm';
 const LAT0 = D.origin[0], LON0 = D.origin[1], KX = Math.cos(LAT0*Math.PI/180)*111320, KY = 110540;
 const toX = lon => (lon-LON0)*KX, toZ = lat => -(lat-LAT0)*KY;
